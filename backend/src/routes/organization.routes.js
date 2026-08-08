@@ -7,6 +7,7 @@ import {
   deleteOrganization
 } from '../controllers/organization.controller.js';
 import membershipRoutes from './membership.routes.js';
+import eventRoutes from './event.routes.js';
 import authenticate from '../middleware/auth.middleware.js';
 import requireOrgRole from '../middleware/authorize.middleware.js';
 import { ROLES } from '../models/membership.model.js';
@@ -20,7 +21,8 @@ router.get('/:organizationId', authenticate, requireOrgRole(), getOrganizationBy
 router.patch('/:organizationId', authenticate, requireOrgRole(ROLES.ADMIN), updateOrganization);
 router.delete('/:organizationId', authenticate, requireOrgRole(ROLES.ADMIN), deleteOrganization);
 
-// Mount nested membership sub-resource routes under /:organizationId/members
+// Mount nested sub-resource routes
 router.use('/:organizationId/members', membershipRoutes);
+router.use('/:organizationId/events', eventRoutes);
 
 export default router;
