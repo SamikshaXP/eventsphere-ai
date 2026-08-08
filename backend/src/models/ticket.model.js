@@ -38,6 +38,12 @@ const ticketSchema = new mongoose.Schema(
       unique: true,
       index: true
     },
+    qrToken: {
+      type: String,
+      unique: true,
+      sparse: true,
+      index: true
+    },
     ticketType: {
       type: String,
       enum: Object.values(TICKET_TYPE),

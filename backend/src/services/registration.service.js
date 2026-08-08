@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import mongoose from 'mongoose';
 import Registration, { REGISTRATION_STATUS } from '../models/registration.model.js';
 import Ticket, { TICKET_STATUS, TICKET_TYPE } from '../models/ticket.model.js';
@@ -11,6 +12,10 @@ const generateTicketNumber = () => {
   const timestamp = Date.now().toString(36).toUpperCase();
   const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
   return `EVT-${year}-${timestamp}-${randomPart}`;
+};
+
+const generateQrToken = () => {
+  return `QR-${crypto.randomBytes(16).toString('hex').toUpperCase()}`;
 };
 
 export const registerForEventService = async ({ organizationId, eventId, userId, ticketType }) => {
@@ -121,6 +126,7 @@ export const registerForEventService = async ({ organizationId, eventId, userId,
       let ticket = null;
       if (!isWaitlisted) {
         const ticketNumber = generateTicketNumber();
+        const qrToken = generateQrToken();
 
         const [createdTicket] = await Ticket.create(
           [
@@ -129,6 +135,7 @@ export const registerForEventService = async ({ organizationId, eventId, userId,
               event: eventId,
               user: userId,
               ticketNumber,
+              qrToken,
               ticketType: selectedType,
               status: TICKET_STATUS.ACTIVE
             }
