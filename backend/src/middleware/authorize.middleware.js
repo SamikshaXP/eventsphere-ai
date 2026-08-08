@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Membership, { MEMBERSHIP_STATUS } from '../models/membership.model.js';
 import ApiError from '../utils/ApiError.js';
 
@@ -16,6 +17,10 @@ export const requireOrgRole = (...allowedRoles) => {
 
       if (!orgId) {
         throw new ApiError(400, 'Organization ID is required for role verification');
+      }
+
+      if (!mongoose.Types.ObjectId.isValid(orgId)) {
+        throw new ApiError(400, 'Invalid organization ID format');
       }
 
       const membership = await Membership.findOne({
