@@ -9,6 +9,7 @@ export const config = {
     mongodbUri: process.env.MONGODB_URI,
     jwtSecret: process.env.JWT_SECRET || 'eventsphere_dev_jwt_secret_change_in_production',
     jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    geminiApiKey: process.env.GEMINI_API_KEY || process.env.AI_API_KEY || '',
 };
 
 export default config;

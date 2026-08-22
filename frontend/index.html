@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventSphere AI — Organizer Intelligence & Recommendations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="dark-theme">
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">EventSphere <span class="badge-ai">AI</span></span>
+          <span class="brand-tagline">Event Intelligence Platform</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button id="tab-analytics" class="nav-tab active" data-view="analytics">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Organizer Analytics & Insights
+        </button>
+        <button id="tab-recommendations" class="nav-tab" data-view="recommendations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          For You (Recommendations)
+        </button>
+      </nav>
+
+      <!-- Connection / Session Control Bar -->
+      <div class="header-actions">
+        <button id="btn-config" class="btn btn-secondary btn-sm" title="Configure API & Auth Token">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          API Settings
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Configuration Drawer / Modal -->
+  <div id="modal-config" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>API & Authentication Settings</h3>
+        <button id="btn-close-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="input-api-url">Backend Base URL</label>
+          <input type="text" id="input-api-url" class="form-control" value="http://localhost:5000/api/v1" />
+        </div>
+        <div class="form-group">
+          <label for="input-auth-token">JWT Bearer Token</label>
+          <textarea id="input-auth-token" class="form-control" rows="3" placeholder="Paste your JWT token here or click Quick Login below"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Quick Test Account Login</label>
+          <div class="btn-group">
+            <button id="btn-quick-login-admin" class="btn btn-outline btn-xs">Login Admin</button>
+            <button id="btn-quick-login-org" class="btn btn-outline btn-xs">Login Organizer</button>
+            <button id="btn-quick-login-part" class="btn btn-outline btn-xs">Login Participant</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="input-org-id">Organization ID</label>
+            <input type="text" id="input-org-id" class="form-control" placeholder="e.g. 64a..." />
+          </div>
+          <div class="form-group col">
+            <label for="input-event-id">Event ID</label>
+            <input type="text" id="input-event-id" class="form-control" placeholder="e.g. 64b..." />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-save-config" class="btn btn-primary">Save Settings & Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main id="app-content" class="app-main">
+    <div id="view-analytics" class="view-container"></div>
+    <div id="view-recommendations" class="view-container hidden"></div>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
