@@ -43,7 +43,10 @@ const apiRequest = async (endpoint, options = {}) => {
   }
 
   if (!response.ok) {
-    const errorMsg = data?.message || data?.error || `HTTP ${response.status}: Request failed`;
+    const errorMsg =
+      data?.message ||
+      (typeof data?.error === 'string' ? data.error : data?.error?.message) ||
+      `HTTP ${response.status}: Request failed`;
     const err = new Error(errorMsg);
     err.status = response.status;
     err.data = data;
@@ -69,14 +72,109 @@ export const fetchUserRecommendations = async () => {
   return result.data?.recommendations || [];
 };
 
+export const fetchMyOrganizations = async () => {
+  const result = await apiRequest('/organizations');
+  return result?.data?.organizations || [];
+};
+
+export const fetchOrganizationEvents = async (orgId) => {
+  const result = await apiRequest(`/organizations/${orgId}/events`);
+  return result?.data?.events || [];
+};
+
+export const createOrganization = async (name, description = '') => {
+  const result = await apiRequest('/organizations', {
+    method: 'POST',
+    body: JSON.stringify({ name, description })
+  });
+  return result?.data;
+};
+
+export const createEvent = async (orgId, eventData) => {
+  const result = await apiRequest(`/organizations/${orgId}/events`, {
+    method: 'POST',
+    body: JSON.stringify(eventData)
+  });
+  return result?.data?.event;
+};
+
 // Helper Login API
 export const loginUser = async (email, password) => {
-  const result = await apiRequest('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password })
-  });
-  if (result?.data?.token) {
-    setAuthToken(result.data.token);
+  const performLogin = async () => {
+    try {
+      const result = await apiRequest('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      return result?.data;
+    } catch (err) {
+      if (err.status === 401) {
+        // If user is not yet registered in MongoDB, attempt auto-registration and retry login
+        const rawName = email.split('@')[0];
+        const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1) + ' User';
+        await apiRequest('/auth/register', {
+          method: 'POST',
+          body: JSON.stringify({ name: formattedName, email, password })
+        });
+        const retryResult = await apiRequest('/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+        return retryResult?.data;
+      }
+      throw err;
+    }
+  };
+
+  const loginData = await performLogin();
+  if (loginData?.token) {
+    setAuthToken(loginData.token);
+
+    try {
+      let orgs = await fetchMyOrganizations();
+      let selectedOrgId = '';
+      let selectedEventId = '';
+
+      if (orgs.length === 0) {
+        const rawName = email.split('@')[0];
+        const orgName = `${rawName.charAt(0).toUpperCase() + rawName.slice(1)} Organization`;
+        const newOrgData = await createOrganization(orgName, 'Auto-generated organization');
+        if (newOrgData?.organization?._id) {
+          selectedOrgId = newOrgData.organization._id;
+        }
+      } else {
+        selectedOrgId = orgs[0].organization?._id || orgs[0]._id;
+      }
+
+      if (selectedOrgId) {
+        localStorage.setItem('eventsphere_org_id', selectedOrgId);
+        let events = await fetchOrganizationEvents(selectedOrgId);
+        if (events.length === 0) {
+          const newEvt = await createEvent(selectedOrgId, {
+            title: 'Sample Launch Event',
+            description: 'Demonstration event for analytics and insights',
+            category: 'Technology',
+            startDate: new Date(Date.now() - 86400000).toISOString(),
+            endDate: new Date(Date.now() + 172800000).toISOString(),
+            locationType: 'ONLINE',
+            capacity: 100,
+            status: 'PUBLISHED'
+          });
+          if (newEvt?._id) {
+            selectedEventId = newEvt._id;
+          }
+        } else {
+          selectedEventId = events[0]._id;
+        }
+
+        if (selectedEventId) {
+          localStorage.setItem('eventsphere_event_id', selectedEventId);
+        }
+      }
+    } catch (setupErr) {
+      console.warn('Auto organization/event setup note:', setupErr.message);
+    }
   }
-  return result.data;
+
+  return loginData;
 };

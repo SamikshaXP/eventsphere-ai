@@ -23,17 +23,32 @@ export const requireOrgRole = (...allowedRoles) => {
         throw new ApiError(400, 'Invalid organization ID format');
       }
 
+      console.log({
+        userId: req.user?._id,
+        organizationId: orgId,
+        requestedRole: allowedRoles
+      });
+
       const membership = await Membership.findOne({
         user: req.user._id,
         organization: orgId,
         status: MEMBERSHIP_STATUS.ACTIVE
       });
 
+      console.log({
+        membershipFound: !!membership,
+        membershipId: membership?._id,
+        membershipRole: membership?.role,
+        membershipStatus: membership?.status
+      });
+
       if (!membership) {
+        console.debug(`[requireOrgRole] 403 Forbidden: No active membership found for user ${req.user._id} in org ${orgId}`);
         throw new ApiError(403, 'Access denied: You do not have an active membership in this organization');
       }
 
       if (allowedRoles.length > 0 && !allowedRoles.includes(membership.role)) {
+        console.debug(`[requireOrgRole] 403 Forbidden: User ${req.user._id} role '${membership.role}' not in allowed roles [${allowedRoles.join(', ')}] for org ${orgId}`);
         throw new ApiError(403, 'Access denied: Insufficient organization role permissions');
       }
 

@@ -26,10 +26,20 @@ export const renderAnalyticsDashboard = async (container, { orgId, eventId, onOp
   `;
 
   try {
-    const [analytics, insights] = await Promise.all([
-      fetchEventAnalytics(orgId, eventId),
-      fetchOrganizerInsights(orgId, eventId)
-    ]);
+    const analytics = await fetchEventAnalytics(orgId, eventId);
+    let insights = {};
+    try {
+      insights = await fetchOrganizerInsights(orgId, eventId);
+    } catch (insightErr) {
+      console.warn('Insights fetch note:', insightErr.message);
+      insights = {
+        prediction: {},
+        risks: [],
+        deterministicInsights: [insightErr.message],
+        aiSummary: null,
+        aiAvailable: false
+      };
+    }
 
     const event = analytics.event || {};
     const regs = analytics.registrations || {};

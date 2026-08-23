@@ -60,11 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       btnSaveConfig.disabled = true;
       btnSaveConfig.textContent = 'Logging in...';
-      const result = await loginUser(email, password);
-      if (result.token) {
-        inputAuthToken.value = result.token;
-      }
-      alert('Login successful! Saved JWT token.');
+      await loginUser(email, password);
+      initModalValues();
+      alert(`Login successful as ${email}! Organization and Event IDs configured.`);
     } catch (err) {
       alert(`Login failed: ${err.message}`);
     } finally {
