@@ -98,6 +98,25 @@ export const createEvent = async (orgId, eventData) => {
   return result?.data?.event;
 };
 
+export const fetchCurrentUser = async () => {
+  const result = await apiRequest('/auth/me');
+  return result?.data;
+};
+
+export const publishEvent = async (orgId, eventId) => {
+  const result = await apiRequest(`/organizations/${orgId}/events/${eventId}/publish`, {
+    method: 'POST'
+  });
+  return result?.data?.event;
+};
+
+export const cancelEvent = async (orgId, eventId) => {
+  const result = await apiRequest(`/organizations/${orgId}/events/${eventId}/cancel`, {
+    method: 'POST'
+  });
+  return result?.data?.event;
+};
+
 // Helper Login API
 export const loginUser = async (email, password) => {
   const performLogin = async () => {

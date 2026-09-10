@@ -13,8 +13,20 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
+const allowedOrigins = [
+  config.clientUrl,
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000'
+].filter(Boolean);
+
 app.use(cors({
-  origin: config.clientUrl,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.some(o => origin.startsWith(o))) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS policy: origin ${origin} not allowed`));
+  },
   credentials: true
 }));
 

@@ -3,96 +3,225 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EventSphere AI — Organizer Intelligence & Recommendations</title>
+  <title>EventSphere AI — Intelligent Event Management & Insights</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body class="dark-theme">
-  <!-- Top Navigation Header -->
-  <header class="app-header">
-    <div class="header-container">
-      <div class="brand">
+  
+  <!-- App Top Navigation Bar -->
+  <header class="app-topbar">
+    <div class="topbar-container">
+      <div class="brand" id="brand-home-click" style="cursor: pointer;">
         <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
           </svg>
         </div>
         <div class="brand-text">
           <span class="brand-name">EventSphere <span class="badge-ai">AI</span></span>
-          <span class="brand-tagline">Event Intelligence Platform</span>
+          <span class="brand-tagline">Event Intelligence SaaS</span>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <nav class="nav-tabs">
-        <button id="tab-analytics" class="nav-tab active" data-view="analytics">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Organizer Analytics & Insights
-        </button>
-        <button id="tab-recommendations" class="nav-tab" data-view="recommendations">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-          For You (Recommendations)
-        </button>
-      </nav>
+      <!-- Global Context Indicator Bar (Active Org & Event) -->
+      <div id="global-context-bar" class="global-context-bar hidden">
+        <div class="context-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+          <span>Org: <strong id="lbl-active-org-name">Default Org</strong></span>
+        </div>
+        <div class="context-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+          <span>Event: <strong id="lbl-active-event-name">Active Event</strong></span>
+        </div>
+      </div>
 
-      <!-- Connection / Session Control Bar -->
-      <div class="header-actions">
-        <button id="btn-config" class="btn btn-secondary btn-sm" title="Configure API & Auth Token">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          API Settings
+      <!-- Right Action Bar -->
+      <div class="topbar-actions">
+        <button id="btn-topbar-login" class="btn btn-primary btn-sm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          Sign In / Register
         </button>
+        
+        <div id="user-profile-badge" class="user-profile-badge hidden">
+          <div class="user-avatar" id="lbl-user-avatar">U</div>
+          <span class="user-name" id="lbl-user-name">User Account</span>
+          <button id="btn-logout" class="btn-icon" title="Sign Out">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Configuration Drawer / Modal -->
-  <div id="modal-config" class="modal-backdrop hidden">
+  <!-- App Main Layout Container (Sidebar + Main Workspace) -->
+  <div class="app-layout">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="app-sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="landing">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Home / Landing
+        </button>
+
+        <button class="nav-item" data-view="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </button>
+
+        <button class="nav-item" data-view="events">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Events
+        </button>
+
+        <button class="nav-item" data-view="analytics">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Analytics
+        </button>
+
+        <button class="nav-item" data-view="insights">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          AI Insights
+        </button>
+
+        <button class="nav-item" data-view="recommendations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          Recommendations
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="nav-item" data-view="organization">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Organization
+        </button>
+
+        <button class="nav-item" data-view="settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Settings
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Workspace View Container -->
+    <main id="app-workspace" class="app-workspace">
+      <div id="view-landing" class="view-container"></div>
+      <div id="view-dashboard" class="view-container hidden"></div>
+      <div id="view-events" class="view-container hidden"></div>
+      <div id="view-analytics" class="view-container hidden"></div>
+      <div id="view-insights" class="view-container hidden"></div>
+      <div id="view-recommendations" class="view-container hidden"></div>
+      <div id="view-organization" class="view-container hidden"></div>
+      <div id="view-settings" class="view-container hidden"></div>
+    </main>
+
+  </div>
+
+  <!-- Global Authentication Modal -->
+  <div id="modal-auth" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>API & Authentication Settings</h3>
-        <button id="btn-close-modal" class="btn-close">&times;</button>
+        <h3>Sign In to EventSphere AI</h3>
+        <button id="btn-close-auth-modal" class="btn-close">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label for="input-api-url">Backend Base URL</label>
-          <input type="text" id="input-api-url" class="form-control" value="http://localhost:5000/api/v1" />
-        </div>
-        <div class="form-group">
-          <label for="input-auth-token">JWT Bearer Token</label>
-          <textarea id="input-auth-token" class="form-control" rows="3" placeholder="Paste your JWT token here or click Quick Login below"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Quick Test Account Login</label>
-          <div class="btn-group">
-            <button id="btn-quick-login-admin" class="btn btn-outline btn-xs">Login Admin</button>
-            <button id="btn-quick-login-org" class="btn btn-outline btn-xs">Login Organizer</button>
-            <button id="btn-quick-login-part" class="btn btn-outline btn-xs">Login Participant</button>
+        <form id="form-auth-login">
+          <div class="form-group">
+            <label for="input-login-email">Email Address</label>
+            <input type="email" id="input-login-email" class="form-control" placeholder="name@company.com" required />
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col">
-            <label for="input-org-id">Organization ID</label>
-            <input type="text" id="input-org-id" class="form-control" placeholder="e.g. 64a..." />
+          <div class="form-group">
+            <label for="input-login-password">Password</label>
+            <input type="password" id="input-login-password" class="form-control" placeholder="••••••••" required />
           </div>
-          <div class="form-group col">
-            <label for="input-event-id">Event ID</label>
-            <input type="text" id="input-event-id" class="form-control" placeholder="e.g. 64b..." />
-          </div>
+          <button type="submit" id="btn-submit-auth" class="btn btn-primary" style="width: 100%;">
+            Sign In
+          </button>
+        </form>
+
+        <div style="text-align: center; margin: 1.25rem 0; font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+          — Or Quick Test Account Login —
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="btn-save-config" class="btn btn-primary">Save Settings & Refresh</button>
+
+        <div class="btn-group-stacked">
+          <button id="btn-quick-admin" class="btn btn-outline btn-sm">Login as Admin (Full Rights)</button>
+          <button id="btn-quick-org" class="btn btn-outline btn-sm">Login as Organizer</button>
+          <button id="btn-quick-part" class="btn btn-outline btn-sm">Login as Participant</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Main View Container -->
-  <main id="app-content" class="app-main">
-    <div id="view-analytics" class="view-container"></div>
-    <div id="view-recommendations" class="view-container hidden"></div>
-  </main>
+  <!-- Global Create Event Modal -->
+  <div id="modal-global-create-event" class="modal-backdrop hidden">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3>Create New Event</h3>
+        <button id="btn-close-create-event" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-global-create-event">
+          <div class="form-group">
+            <label for="evt-title">Event Title *</label>
+            <input type="text" id="evt-title" class="form-control" placeholder="e.g. AI & Tech Leaders Summit 2026" required />
+          </div>
+          <div class="form-group">
+            <label for="evt-desc">Description</label>
+            <textarea id="evt-desc" class="form-control" rows="3" placeholder="Brief event summary..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="evt-category">Category *</label>
+              <select id="evt-category" class="form-control" required>
+                <option value="Technology">Technology</option>
+                <option value="Business">Business</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+            <div class="form-group col">
+              <label for="evt-location-type">Location Type *</label>
+              <select id="evt-location-type" class="form-control" required>
+                <option value="ONLINE">Online</option>
+                <option value="PHYSICAL">Physical Venue</option>
+                <option value="HYBRID">Hybrid</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="evt-capacity">Capacity *</label>
+              <input type="number" id="evt-capacity" class="form-control" value="100" min="1" required />
+            </div>
+            <div class="form-group col">
+              <label for="evt-status">Publish Status *</label>
+              <select id="evt-status" class="form-control" required>
+                <option value="PUBLISHED">PUBLISHED</option>
+                <option value="DRAFT">DRAFT</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="evt-start-date">Start Date & Time *</label>
+              <input type="datetime-local" id="evt-start-date" class="form-control" required />
+            </div>
+            <div class="form-group col">
+              <label for="evt-end-date">End Date & Time *</label>
+              <input type="datetime-local" id="evt-end-date" class="form-control" required />
+            </div>
+          </div>
+          <div style="margin-top: 1rem; text-align: right;">
+            <button type="submit" class="btn btn-primary">Publish Event</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
