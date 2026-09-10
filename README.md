@@ -36,7 +36,7 @@ The current intelligence layer includes:
 - Personalized Recommendations
 
 The overall idea is:
-
+```text
 Event Data
     ↓
 Analytics
