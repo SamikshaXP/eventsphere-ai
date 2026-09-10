@@ -135,27 +135,6 @@ EventSphere AI follows a modular full-stack architecture.
                                       │
                                   MongoDB
 
-##The overall data relationship is designed around:
-  Organization
-      │
-      ├── Members
-      │
-      └── Events
-            │
-            ├── Registrations
-            │
-            ├── Tickets
-            │
-            ├── Attendance
-            │
-            └── Analytics
-                    │
-                    └── ESIE
-                         ├── Risk Analysis
-                         ├── Demand Prediction
-                         ├── Insights
-                         └── Recommendations
-
 
 🛠️ Tech Stack
 ## Frontend
@@ -181,69 +160,6 @@ Demand Prediction
 Event Risk Analysis
 Insight Generation
 Recommendation Engine  
-
-### Project Structure
-EventSphere-AI/
-│
-├── backend/
-│   └── src/
-│       ├── config/
-│       ├── controllers/
-│       ├── middleware/
-│       ├── models/
-│       ├── routes/
-│       ├── services/
-│       └── utils/
-│
-├── frontend/
-│   └── src/
-│       ├── components/
-│       ├── api.js
-│       ├── main.js
-│       └── style.css
-│
-├── docs/
-│
-├── assets/
-│
-├── scripts/
-│
-├── .env.example
-├── package.json
-└── README.md
-
-### Core Workflow
-User
- │
- ▼
-Authentication
- │
- ▼
-Organization
- │
- ▼
-Event
- │
- ├───────────────┐
- ▼               ▼
-Registration    Management
- │
- ▼
-Ticket
- │
- ▼
-Attendance
- │
- ▼
-Analytics
- │
- ▼
-ESIE
- │
- ├── Risk Analysis
- ├── Demand Prediction
- ├── Insights
- └── Recommendations
 
  ## Team
 
