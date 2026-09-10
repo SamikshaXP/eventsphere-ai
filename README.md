@@ -134,3 +134,126 @@ EventSphere AI follows a modular full-stack architecture.
               └────────── API ─────────┘
                                       │
                                   MongoDB
+
+##The overall data relationship is designed around:
+  Organization
+      │
+      ├── Members
+      │
+      └── Events
+            │
+            ├── Registrations
+            │
+            ├── Tickets
+            │
+            ├── Attendance
+            │
+            └── Analytics
+                    │
+                    └── ESIE
+                         ├── Risk Analysis
+                         ├── Demand Prediction
+                         ├── Insights
+                         └── Recommendations
+
+
+🛠️ Tech Stack
+## Frontend
+React
+Vite
+JavaScript
+CSS
+## Backend
+Node.js
+Express.js
+REST APIs
+Database
+MongoDB
+Mongoose
+## Authentication & Security
+JWT
+bcrypt
+Organization-based RBAC
+Protected API routes
+## AI & Intelligence
+AI service architecture
+Demand Prediction
+Event Risk Analysis
+Insight Generation
+Recommendation Engine  
+
+### Project Structure
+EventSphere-AI/
+│
+├── backend/
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── models/
+│       ├── routes/
+│       ├── services/
+│       └── utils/
+│
+├── frontend/
+│   └── src/
+│       ├── components/
+│       ├── api.js
+│       ├── main.js
+│       └── style.css
+│
+├── docs/
+│
+├── assets/
+│
+├── scripts/
+│
+├── .env.example
+├── package.json
+└── README.md
+
+### Core Workflow
+User
+ │
+ ▼
+Authentication
+ │
+ ▼
+Organization
+ │
+ ▼
+Event
+ │
+ ├───────────────┐
+ ▼               ▼
+Registration    Management
+ │
+ ▼
+Ticket
+ │
+ ▼
+Attendance
+ │
+ ▼
+Analytics
+ │
+ ▼
+ESIE
+ │
+ ├── Risk Analysis
+ ├── Demand Prediction
+ ├── Insights
+ └── Recommendations
+
+ ## Team
+
+EventSphere AI is developed as a collaborative full-stack project.
+
+Team Members
+Samiksha
+Sanya
+Prachi
+
+The project follows a modular development approach where different team
+members contribute to frontend, backend, database, analytics and AI-related
+modules.
