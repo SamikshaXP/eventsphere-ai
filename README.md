@@ -37,7 +37,6 @@ The current intelligence layer includes:
 
 The overall idea is:
 
-```text
 Event Data
     ↓
 Analytics
